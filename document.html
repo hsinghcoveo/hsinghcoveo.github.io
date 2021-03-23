@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function(){
+                debugger;
+                var data = JSON.parse(atob(window.location.href.split('?data=')[1]));
+                var _url = 'https://support.hpe.com/hpesc/public/docDisplay?docId=';
+                debugger;
+                var settings = {
+                    "url": "https://platform.cloud.coveo.com/rest/ua/v15/analytics/click",
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                      "Authorization": "Bearer xxe1afc9f5-133a-4b7e-bb57-7c33c7c5fa6e",
+                      "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({
+                        "actionCause":"documentOpen",
+                        "actionType":"document",
+                        "language":"en",
+                        "originLevel1":"SprinklrAutomation",
+                        "originLevel2":"default",
+                        "originLevel3":"",
+                        "originContext":"Search",
+                        "customData":{
+                            "documentURL": _url+data["docid"],
+                            "documentTitle":data["doctitle"],
+                            "contentIDKey":"urihash",
+                            "contentIDValue":data["urihash"]
+                        },
+                        "searchQueryUid":data["searchuid"],
+                        "queryPipeline":"Sprinklr-Automation",
+                        "documentUri":_url+data["docid"],
+                        "documentUriHash":data["urihash"],
+                        "documentUrl":_url+data["docid"],
+                        "documentTitle":data["doctitle"],
+                        "collectionName":"default",
+                        "sourceName":data["sourcename"],
+                        "documentPosition":data["docposition"],
+                        "viewMethod":"documentOpen"
+                    })
+                  };
+                  
+                  $.ajax(settings).done(function (response) {
+                      debugger;
+                      window.location.replace(_url+data["docid"]);
+                });
+            });
+        </script>
+    </head>
+    <body>
+        
+    </body>
+</html>

@@ -1,0 +1,136 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        <style>
+            body div {
+                padding: 10px;
+                margin: auto;
+            }
+        </style>
+        <script>
+            var config = {};
+            var srchResp = {};
+
+            document.addEventListener("DOMContentLoaded",function(){
+                config = JSON.parse(localStorage.getItem("coveoConfig"));
+                document.getElementById('org').innerText = config["org"];
+                document.getElementById('subject').innerText = config["subject"];
+                document.getElementById('desc').innerText = config["desc"];
+                
+                var settings = {
+                    "url": "https://platform.cloud.coveo.com/rest/search/v2",
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                      "Authorization": "Bearer "+config["apiKey"],
+                      "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({
+                        "searchHub":"SprinklrAutomation",
+                        "firstResult":0,
+                        "numberOfResults":3,
+                        "context": {
+                            "subject": config["subject"],
+                            "description": config["desc"]
+                        }
+                    })
+                };
+                  
+                $.ajax(settings).done(function (response) {
+                    srchResp = response;
+                    console.log(response);
+                    if(response.totalCount > 0) {
+                        for(var i=0;i<response.results.length;i++){
+                            var res = response.results[i];
+                            
+                            var resEl = document.createElement('div');
+                            
+                            var titleEl = document.createElement('a');
+                            titleEl.innerText = res.title;
+                            titleEl.href = 'javascript:void(0)';
+                            titleEl.setAttribute('data-docId',res.raw.kmdocid);
+                            titleEl.setAttribute('data-docTitle',res.title);
+                            titleEl.setAttribute('data-docPosition',i+1);
+                            titleEl.setAttribute('data-searchUid',srchResp["searchUid"]);
+                            titleEl.setAttribute('data-uriHash',res.raw.urihash);
+                            titleEl.setAttribute('data-sourceName',res.raw.syssource);
+                            titleEl.onclick = function(e) {
+                                e.preventDefault();
+                                var url = 'http://'+window.location.host+'/document?data=';
+                                var data = {};
+                                var attrNames = e.target.getAttributeNames();
+                                for(var i=0;i<attrNames.length;i++){
+                                    if(attrNames[i].indexOf('data-')>-1){
+                                        data[attrNames[i].replace('data-','')] = e.target.getAttribute(attrNames[i]);
+                                    }
+                                }
+                                url = url + btoa(JSON.stringify(data));
+                                window.open(url,'_blank');
+                            }
+                            resEl.appendChild(titleEl);
+                            
+                            var excerptEl = document.createElement('div');
+                            excerptEl.innerText = res.excerpt;
+                            resEl.appendChild(excerptEl);
+
+                            document.getElementById('results').appendChild(resEl);
+                        }
+                    }
+
+                        var evtSettings = {
+                            "url": "https://platform.cloud.coveo.com/rest/ua/v15/analytics/searches",
+                            "method": "POST",
+                            "timeout": 0,
+                            "headers": {
+                            "Authorization": "Bearer "+config["apiKey"],
+                            "Content-Type": "application/json"
+                            },
+                            "data": JSON.stringify([{
+                                "actionCause": "SprinklrAutoSearch",
+                                "actionType": "Search",
+                                "language": "en",
+                                "numberOfResults": srchResp["totalCount"],
+                                "originContext": "Search",
+                                "originLevel1": "SprinklrAutomation",
+                                "originLevel2": "default",
+                                "originLevel3": "",
+                                "pageNumber": 0,
+                                "queryPipeline": srchResp["pipeline"],
+                                "queryText": config["subject"],
+                                "responseTime": srchResp["duration"],
+                                "searchQueryUid": srchResp["searchUid"]
+                            }])
+                        };
+                        
+                        $.ajax(evtSettings).done(function (response) {
+                            console.log(response);
+                        });
+
+                });
+
+            }); 
+        </script>
+    </head>
+    <body>
+        <div>
+            <a href="/index">Back to input</a>
+        </div>
+        <div>
+            <label>Organization : </label>
+            <div id="org"></div>
+        </div>
+        <div>
+            <label>Subject : </label>
+            <div id="subject"></div>
+        </div>
+        <div>
+            <label>Desc : </label>
+            <div id="desc"></div>
+        </div>
+        <div>
+            <label> Results : </label>
+            <div id="results"></div>
+        </div>
+    </body>
+</html>
+

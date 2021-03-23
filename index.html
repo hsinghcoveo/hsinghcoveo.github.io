@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <style>
+            body div {
+                padding: 10px;
+                margin: auto;
+            }
+        </style>
+        <script>
+            var org_key = {
+                "hewlettpackardnonproduction1u51hay96": "xx17ba35e7-e80f-422a-8f49-5edb1352e95f",
+                "hewlettpackardnonproduction2mogyl6nm": "xxb6c7566e-2d1d-4e0f-ac0f-6cd8855f4b45",
+                "hewlettpackardproductioniwmg9b9w": "xxe1afc9f5-133a-4b7e-bb57-7c33c7c5fa6e"
+            }
+            var config = {};
+            function doSearch(){
+                config["org"] = document.getElementById('org').value;
+                config["apiKey"] = org_key[config["org"]];
+                config["subject"] = document.getElementById('subject').value;
+                config["desc"] = document.getElementById('desc').value;
+                console.log(JSON.stringify(config));
+                localStorage.setItem("coveoConfig",JSON.stringify(config));
+                window.location.replace('http://'+window.location.host+'/search');
+            }
+        </script>
+    </head>
+    <body>
+        <div>
+            <div>
+                <label for="org">Coveo Org : </label>
+                <select id="org" name="org">
+                    <option value="hewlettpackardproductioniwmg9b9w">Prod</option>
+                    <option value="hewlettpackardnonproduction1u51hay96">Non-Prod 1</option>
+                    <option value="hewlettpackardnonproduction2mogyl6nm">Non-Prod 2</option>
+                </select>
+            </div>
+            <div>
+                <label for="subject">Subject : </label>
+                <input type="text" id="subject" name="subject" style="width: 100%;"></input>
+            </div>
+            <div>
+                <label for="desc">Description : </label>
+                <input type="text" id="desc" name="desc" style="width: 100%;"></input>
+            </div>
+            <div>
+                <button id="search" onclick="doSearch()">Search</button>
+            </div>
+        </div>
+    </body>
+</html>
