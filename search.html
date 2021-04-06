@@ -73,6 +73,10 @@
                             excerptEl.innerText = res.excerpt;
                             resEl.appendChild(excerptEl);
 
+                            var detailsEl = document.createElement('div');
+                            detailsEl.innerHTML = res.raw.kmdocid+"&emsp;"+res.raw.kmdoctype;
+                            resEl.appendChild(detailsEl);
+
                             document.getElementById('results').appendChild(resEl);
                         }
                     }
