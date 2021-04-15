@@ -102,7 +102,12 @@
                                 "queryPipeline": srchResp["pipeline"],
                                 "queryText": config["subject"],
                                 "responseTime": srchResp["duration"],
-                                "searchQueryUid": srchResp["searchUid"]
+                                "searchQueryUid": srchResp["searchUid"],
+                                "customData": {
+                                    "subject": config["subject"],
+                                    "description": config["desc"],
+                                    "refinedKeywords": srchResp["refinedKeywords"]
+                                }
                             }])
                         };
                         
