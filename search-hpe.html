@@ -26,20 +26,16 @@
                       "Content-Type": "application/json"
                     },
                     "data": JSON.stringify({
-                        "searchHub":"SprinklrAutomation",
+                        "searchHub":"HPE-Search-Page",
+                        "tab": "Documents",
                         "firstResult":0,
                         "numberOfResults":3,
                         "q": config["subject"],
-                        "mlParameters": {
-                            "filters": {
-                                "originLevel1":"HPE-Search-Page", 
-                                "originLevel2":"Documents"
-                            }
-                        }
-                        /*"context": {
+                        "cq": "@source==cdp-km-document-itg-h9-v2 AND @kmdoclanguagecode==cv1871440",
+                        "context": {
                             "subject": config["subject"],
                             "description": config["desc"]
-                        }*/
+                        }
                     })
                 };
                   
