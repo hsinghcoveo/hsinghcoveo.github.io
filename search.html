@@ -30,6 +30,7 @@
                         "firstResult":0,
                         "numberOfResults":3,
                         "q": config["subject"],
+                        "debug": true,
                         "mlParameters": {
                             "filters": {
                                 "originLevel1":"HPE-Search-Page", 
@@ -83,6 +84,10 @@
                             var detailsEl = document.createElement('div');
                             detailsEl.innerHTML = res.raw.kmdocid+"&emsp;"+res.raw.kmdoctype;
                             resEl.appendChild(detailsEl);
+
+                            var rankingEL = document.createElement('div');
+                            rankingEL.innerHTML =  res.rankingModifier+"&emsp;"+res.rankingInfo;
+                            resEl.appendChild(rankingEL);
 
                             document.getElementById('results').appendChild(resEl);
                         }

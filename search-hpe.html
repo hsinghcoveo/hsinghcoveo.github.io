@@ -31,6 +31,7 @@
                         "firstResult":0,
                         "numberOfResults":3,
                         "q": config["subject"],
+                        "debug": true,
                         "cq": "@source==cdp-km-document-itg-h9-v2 AND @kmdoclanguagecode==cv1871440",
                         "context": {
                             "subject": config["subject"],
@@ -79,6 +80,10 @@
                             var detailsEl = document.createElement('div');
                             detailsEl.innerHTML = res.raw.kmdocid+"&emsp;"+res.raw.kmdoctype;
                             resEl.appendChild(detailsEl);
+
+                            var rankingEL = document.createElement('div');
+                            rankingEL.innerHTML =  res.rankingModifier+"&emsp;"+res.rankingInfo;
+                            resEl.appendChild(rankingEL);
 
                             document.getElementById('results').appendChild(resEl);
                         }
