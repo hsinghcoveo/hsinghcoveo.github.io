@@ -14,10 +14,18 @@
             }
             var config = {};
             function doSearch(){
+                debugger;
+                var sub = document.getElementById('subject').value;
+                var matches = [...sub.matchAll(/(MSa20\d{2}[^\s]*)|EVA\d{4}|Nimble|nimble|FlexFabric|C\d{4}|ML\s\d{3}\sG\d|SNMPv\d*|HP\s\d{3,4}|Proliant|DL\d{3}\S*|SureStore|ProCurve|MSA\s?\d{4}|ML\d{3}|CentOS\d{1,2}|SimpliVity|ILO/gi)];
+                matches = matches.flat();
+                matches = matches.filter(function( element ) {
+                    return element !== undefined;
+                 });
                 config["org"] = document.getElementById('org').value;
                 config["apiKey"] = org_key[config["org"]];
                 config["subject"] = document.getElementById('subject').value;
                 config["desc"] = document.getElementById('desc').value;
+                config["productName"] = matches.join(";");
                 console.log(JSON.stringify(config));
                 localStorage.setItem("coveoConfig",JSON.stringify(config));
                 window.location.replace('http://'+window.location.host+'/search');
