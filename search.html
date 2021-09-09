@@ -51,7 +51,17 @@
                             var res = response.results[i];
                             
                             var resEl = document.createElement('div');
-                            
+
+                            var bodyEl = document.createElement('button');
+                            bodyEl.onclick = function(e) {
+                                var url = "https://platform.cloud.coveo.com/rest/search/v2/html?uniqueId="+
+                                e.target.getAttribute('data-uniqueid')+
+                                "&access_token="+config["apiKey"];
+                                window.open(url,"_blank");
+                            }
+                            bodyEl.innerText = "Get Body";
+                            bodyEl.setAttribute('data-uniqueId',res.uniqueId);
+
                             var titleEl = document.createElement('a');
                             titleEl.innerText = res.title;
                             titleEl.href = 'javascript:void(0)';
@@ -61,6 +71,7 @@
                             titleEl.setAttribute('data-searchUid',srchResp["searchUid"]);
                             titleEl.setAttribute('data-uriHash',res.raw.urihash);
                             titleEl.setAttribute('data-sourceName',res.raw.syssource);
+                            titleEl.setAttribute('data-uniqueId',res.uniqueId);
                             titleEl.onclick = function(e) {
                                 e.preventDefault();
                                 var url = 'http://'+window.location.host+'/document?data=';
@@ -75,6 +86,7 @@
                                 window.open(url,'_blank');
                             }
                             resEl.appendChild(titleEl);
+                            resEl.appendChild(bodyEl);
                             
                             var excerptEl = document.createElement('div');
                             excerptEl.innerText = res.excerpt;
